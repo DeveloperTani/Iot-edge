@@ -8,7 +8,7 @@ def message_handler(message):
     try:
         payload = json.loads(message.data)
         iothub_message = Message(json.dumps(payload))
-        module_client.send_message(iothub_message)
+        module_client.send_message(iothub_message, "publisherOutput")
         print("Forwarded to IoT Hub.")
     except Exception as e:
         print(f"Failed to process message: {e}")
