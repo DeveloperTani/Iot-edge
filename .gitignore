@@ -1,0 +1,15 @@
+# Ignore environment files
+.env
+
+# Python-related
+__pycache__/
+*.pyc
+
+# VS Code settings
+.vscode/
+
+# System files
+.DS_Store
+
+# Docker
+*.log

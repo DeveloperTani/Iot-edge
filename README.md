@@ -12,7 +12,7 @@ In the future, I plan to replace the simulated sensor with a custom python scrip
 
 The Edge device is running the following modules:
 
-![iotedge-list](screenshots/azure-iot-edge.png)
+![iotedge-list](azure-edge-telemetry/screenshots/azure-iot-edge.png)
 
 ---
 
@@ -20,4 +20,4 @@ The Edge device is running the following modules:
 
 The device is visible and reporting successfully to the Azure IoT Hub:
 
-![azure-portal](screenshots/azure-iot-edge1.png)
+![azure-portal](azure-edge-telemetry/screenshots/azure-iot-edge1.png)
