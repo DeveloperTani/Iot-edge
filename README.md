@@ -1,18 +1,17 @@
 # IoT Edge System Telemetry Module
 
-The current iteration of this project deploys a single IoT Edge module on WSL2 (`sensorlogger`) that collects and sends basic system telemetry from an edge device to Azure IoT Hub.
+The current version of this project deploys a single IoT Edge module (sensorlogger) to a physical Ubuntu 22.04 laptop accessed via SSH, collecting and forwarding system telemetry to Azure IoT Hub.
 
 ## 📌 Overview
+🔧 Tech Stack
 
-- **Module**: `sensorlogger`
-- **Platform**: Azure IoT Edge (Linux)
-- **Language**: Python 3.11
-- **Containerization**: Docker → Azure Container Registry (ACR)
-- **Telemetry Includes**:
-  - CPU usage
-  - Memory usage
-  - Disk usage
-  - UTC timestamp
+    Azure IoT Hub + IoT Edge runtime
+
+    Docker + Azure Container Registry
+
+    Python 3.11 (psutil-based module)
+
+    Host system: Ubuntu 22.04 (Laptop)
 
 ## 🔧 Key Features
 
@@ -35,7 +34,6 @@ The current iteration of this project deploys a single IoT Edge module on WSL2 (
 - Logic separation into multiple modules
 - Implement cloud-to-device (C2D) messaging support
 - Support direct method invocation from the cloud
-- Running the device and modules on Linux Ubuntu 22.04.5 on my laptop and using it via SSH
 - Build a custom "thermostat" using an ESP32 with a temperature sensor + 5v relay
 - Read and process live data from the ESP32 thermostat
 - Connecting data stream to Power BI (If I get Microsoft dev program access)
@@ -51,7 +49,7 @@ The current iteration of this project deploys a single IoT Edge module on WSL2 (
 
 ![Device Module Status](azure-edge-telemetry/screenshots/localEdgeDevice-200.png)
 
-![Module Logs](azure-edge-telemetry/screenshots/log-stream.png)
+![Module Logs](azure-edge-telemetry/screenshots/iotedge-laptop.png)
 
 ![Image In ACR](azure-edge-telemetry/screenshots/sensorlogger-image.png)
 
