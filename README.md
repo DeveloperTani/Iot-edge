@@ -1,23 +1,45 @@
-# Azure IoT Edge on Ubuntu (WSL2)
+# IoT Edge System Telemetry Module
 
-This repository documents my experience setting up and working with Azure IoT Edge on a local Linux machine using **Ubuntu 24.04** via **WSL2**.
+The current iteration of this project deploys a single IoT Edge module (`sensorlogger`) that collects and sends basic system telemetry from an edge device to Azure IoT Hub.
 
-I successfully configured an **IoT Edge device** using Microsoft's `aziot-edge` runtime, registered it in **Azure IoT Hub**, and deployed the **Simulated Temperature Sensor** module. This setup validates connectivity and demonstrates real-time telemetry flow from a Linux host to Azure.
+## 📌 Overview
 
-In the future, I plan to replace the simulated sensor with a custom python script that collects data from my local machine's hardware sensors.
+- **Module**: `sensorlogger`
+- **Platform**: Azure IoT Edge (Linux)
+- **Language**: Python 3.11
+- **Containerization**: Docker → Azure Container Registry (ACR)
+- **Telemetry Includes**:
+  - CPU usage
+  - Memory usage
+  - Disk usage
+  - UTC timestamp
 
----
+## 🔧 Key Features
 
-## ✅ Running Modules
+- Uses `psutil` to gather system metrics
+- Sends JSON-formatted messages every 5 seconds
+- No reliance on Microsoft IoT base images (uses standard `python:3.11`)
 
-The Edge device is running the following modules:
 
-![iotedge-list](azure-edge-telemetry/screenshots/azure-iot-edge.png)
+## 🔁 Sample Telemetry Payload
+```json
+{
+  "timestamp": "2025-06-26T18:55:00.363867Z",
+  "cpu_usage": 0.0,
+  "memory_usage": 6.6,
+  "disk_usage": 0.3
+}
+```
 
----
+📸 Screenshots
+![Event Stream](azure-edge-telemetry/screenshots/azureCLI-stream.png)
 
-## 📡 Azure IoT Hub Confirmation
+![Iot Hub Overview](azure-edge-telemetry/screenshots/hub-overview.png)
 
-The device is visible and reporting successfully to the Azure IoT Hub:
+![Device Module Status](azure-edge-telemetry/screenshots/localEdgeDevice-200.png)
 
-![azure-portal](azure-edge-telemetry/screenshots/azure-iot-edge1.png)
+![Module Logs](azure-edge-telemetry/screenshots/log-stream.png)
+
+![Image In ACR](azure-edge-telemetry/screenshots/sensorlogger-image.png)
+
+![Module Settings In Portal](azure-edge-telemetry/screenshots/sensorlogger-module.png)
