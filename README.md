@@ -1,6 +1,6 @@
 # IoT Edge System Telemetry Module
 
-The current iteration of this project deploys a single IoT Edge module (`sensorlogger`) that collects and sends basic system telemetry from an edge device to Azure IoT Hub.
+The current iteration of this project deploys a single IoT Edge module on WSL2 (`sensorlogger`) that collects and sends basic system telemetry from an edge device to Azure IoT Hub.
 
 ## 📌 Overview
 
@@ -30,6 +30,19 @@ The current iteration of this project deploys a single IoT Edge module (`sensorl
   "disk_usage": 0.3
 }
 ```
+## 🚧 Future Plans
+
+- Logic separation into multiple modules
+- Implement cloud-to-device (C2D) messaging support
+- Support direct method invocation from the cloud
+- Running the device and modules on Linux Ubuntu 22.04.5 server on a laptop
+- Build a custom "thermostat" using an ESP32 with a temperature sensor + 5v relay
+- Read and process live data from the ESP32 thermostat
+- Connecting data stream to Power BI (If I get Microsoft dev program access)
+
+
+
+
 
 📸 Screenshots
 ![Event Stream](azure-edge-telemetry/screenshots/azureCLI-stream.png)
