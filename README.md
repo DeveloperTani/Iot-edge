@@ -35,7 +35,7 @@ The current iteration of this project deploys a single IoT Edge module on WSL2 (
 - Logic separation into multiple modules
 - Implement cloud-to-device (C2D) messaging support
 - Support direct method invocation from the cloud
-- Running the device and modules on Linux Ubuntu 22.04.5 server on a laptop
+- Running the device and modules on Linux Ubuntu 22.04.5 on my laptop and using it via SSH
 - Build a custom "thermostat" using an ESP32 with a temperature sensor + 5v relay
 - Read and process live data from the ESP32 thermostat
 - Connecting data stream to Power BI (If I get Microsoft dev program access)
