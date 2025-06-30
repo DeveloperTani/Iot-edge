@@ -1,6 +1,6 @@
 # IoT Edge System Telemetry Module
 
-The current version of this project deploys two IoT Edge modules (system_reader) and (cloud_publisher) to a physical Ubuntu 22.04 laptop accessed via SSH, collecting and forwarding system telemetry to Azure IoT Hub.
+The current version of this project deploys two IoT Edge modules (system_reader) and (cloud_publisher) to a physical Ubuntu 22.04 laptop accessed via SSH. The modules collect local system telemetry and forward it to Azure IoT Hub in real time.
 
 ## 📌 Overview
 🔧 Tech Stack
@@ -9,15 +9,16 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 
     Docker + Azure Container Registry
 
-    Python 3.11 (psutil-based module)
+    Python 3.10-slim
 
     Host system: Ubuntu 22.04 (Laptop)
 
 ## 🔧 Key Features
 
-- Uses `psutil` to gather system metrics
+- Gathers telemetry (CPU, memory, disk usage) using psutil
 - Sends JSON-formatted messages every 5 seconds
-- No reliance on Microsoft IoT base images (uses standard `python:3.11`)
+- Clean separation of logic between system_reader and cloud_publisher
+- Built without Microsoft IoT SDK base images
 
 
 ## 🔁 Sample Telemetry Payload
