@@ -31,8 +31,8 @@ The current version of this project deploys a single IoT Edge module (sensorlogg
 ```
 ## 🚧 Future Plans
 
-- Logic separation into multiple modules
-- Implement cloud-to-device (C2D) messaging support
+- Logic separation into multiple modules with custom routes ✅
+- Implement cloud-to-device (C2D) messaging
 - Support direct method invocation from the cloud
 - Build a custom "thermostat" using an ESP32 with a temperature sensor + 5v relay
 - Read and process live data from the ESP32 thermostat
@@ -43,14 +43,12 @@ The current version of this project deploys a single IoT Edge module (sensorlogg
 
 
 📸 Screenshots
-![Event Stream](azure-edge-telemetry/screenshots/azureCLI-stream.png)
+![Event Stream](azure-edge-telemetry/screenshots/azure-cli-stream.png)
 
-![Iot Hub Overview](azure-edge-telemetry/screenshots/hub-overview.png)
+![Device Status](azure-edge-telemetry/screenshots/sensorLogger-device.png)
 
-![Device Module Status](azure-edge-telemetry/screenshots/localEdgeDevice-200.png)
+![Module Logs](azure-edge-telemetry/screenshots/reader-and-publisher-logs.png)
 
-![Module Logs](azure-edge-telemetry/screenshots/iotedge-laptop.png)
+![system_reader](azure-edge-telemetry/screenshots/system-reader.png)
 
-![Image In ACR](azure-edge-telemetry/screenshots/sensorlogger-image.png)
-
-![Module Settings In Portal](azure-edge-telemetry/screenshots/sensorlogger-module.png)
+![cloud_publisher](azure-edge-telemetry/screenshots/cloud-publisher.png)
