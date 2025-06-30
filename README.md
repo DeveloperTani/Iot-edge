@@ -49,6 +49,6 @@ The current version of this project deploys a single IoT Edge module (sensorlogg
 
 ![Module Logs](azure-edge-telemetry/screenshots/reader-and-publisher-logs.png)
 
-![system_reader](azure-edge-telemetry/screenshots/system-reader.png)
+![system_reader](azure-edge-telemetry/screenshots/system_reader.png)
 
-![cloud_publisher](azure-edge-telemetry/screenshots/cloud-publisher.png)
+![cloud_publisher](azure-edge-telemetry/screenshots/cloud_publisher.png)
