@@ -1,6 +1,6 @@
 # IoT Edge System Telemetry Module
 
-The current version of this project deploys a single IoT Edge module (sensorlogger) to a physical Ubuntu 22.04 laptop accessed via SSH, collecting and forwarding system telemetry to Azure IoT Hub.
+The current version of this project deploys two IoT Edge modules (system_reader) and (cloud_publisher) to a physical Ubuntu 22.04 laptop accessed via SSH, collecting and forwarding system telemetry to Azure IoT Hub.
 
 ## 📌 Overview
 🔧 Tech Stack
