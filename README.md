@@ -2,6 +2,8 @@
 
 The current version of this project deploys two IoT Edge modules (system_reader) and (cloud_publisher) to a physical Ubuntu 22.04 laptop accessed via SSH. The modules collect local system telemetry and forward it to Azure IoT Hub in real time.
 
+ As a next phase, I plan to integrate my home-built Wi-fi "thermostat" into this project to act as a physical data source.
+
 ## 📌 Overview
 🔧 Tech Stack
 
@@ -33,10 +35,10 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 ## 🚧 Future Plans
 
 - Logic separation into multiple modules with custom routes ✅
+- Build a custom Wi-fi "thermostat" using an ESP32, temp sensor and a relay ✅
+- Read and process live data from the ESP32 thermostat
 - Implement cloud-to-device (C2D) messaging
 - Support direct method invocation from the cloud
-- Build a custom "thermostat" using an ESP32 with a temperature sensor + 5v relay
-- Read and process live data from the ESP32 thermostat
 - Connecting data stream to Power BI (If I get Microsoft dev program access)
 
 
