@@ -4,7 +4,7 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 
  As a next phase, I plan to integrate my home-built Wi-fi "thermostat" into this project to act as a physical data source.
 
-## 📌 Overview
+##  Overview
 🔧 Tech Stack
 
     Azure IoT Hub + IoT Edge runtime
@@ -15,13 +15,13 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 
     Host system: Ubuntu 22.04 (Laptop)
 
-## 🔧 Key Features
+##  Key Features
 
 - Gathers telemetry (CPU, memory, disk usage) using psutil
 - Sends JSON-formatted messages every 5 seconds
 - Clean separation of logic between system_reader and cloud_publisher
 
-## 🔁 Sample Telemetry Payload
+##  Sample Telemetry Payload
 ```json
 {
   "timestamp": "2025-06-26T18:55:00.363867Z",
@@ -30,7 +30,7 @@ The current version of this project deploys two IoT Edge modules (system_reader)
   "disk_usage": 0.3
 }
 ```
-## 🚧 Future Plans
+## Future Plans
 
 - Logic separation into multiple modules with custom routes ✅
 - Build a custom Wi-fi "thermostat" using an ESP32, temp sensor and a relay ✅
@@ -43,7 +43,7 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 
 
 
-📸 Screenshots
+## Screenshots
 ![Event Stream](/screenshots/azure-cli-stream.png)
 
 ![Device Status](/screenshots/sensorLogger-device.png)
