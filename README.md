@@ -20,8 +20,6 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 - Gathers telemetry (CPU, memory, disk usage) using psutil
 - Sends JSON-formatted messages every 5 seconds
 - Clean separation of logic between system_reader and cloud_publisher
-- Built without Microsoft IoT SDK base images
-
 
 ## 🔁 Sample Telemetry Payload
 ```json
@@ -52,6 +50,6 @@ The current version of this project deploys two IoT Edge modules (system_reader)
 
 ![Module Logs](/screenshots/reader-and-publisher-logs.png)
 
-![system_reader](/screenshots/system-reader.png)
+![system_reader](/screenshots/system_reader.png)
 
-![cloud_publisher](/screenshots/cloud-publisher.png)
+![cloud_publisher](/screenshots/cloud_publisher.png)
