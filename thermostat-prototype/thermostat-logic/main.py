@@ -16,7 +16,7 @@ def load_wifi_credentials():
             return creds["ssid"], creds["password"]
     except Exception as e:
         print("Failed to load wifi.json, using fallback:", e)
-        return "your-wifi-SSID", "your-password" # Add fallback credentials
+        return "your-wifi-SSID", "your-password" # fallback credentials for testing
 
 SSID, PASSWORD = load_wifi_credentials()
 
