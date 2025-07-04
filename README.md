@@ -1,10 +1,10 @@
 # IoT Edge System + Thermostat Sensor logger
 
-This project is a working prototype of an IoT Edge deployment using a physical Ubuntu laptop as the edge device. It simulates and collects telemetry from two sources:
+This project is a working prototype of an Azure IoT Edge deployment using a physical Ubuntu laptop as the edge device. It collects and routes telemetry from two sources:
 
     The laptop’s own system metrics (CPU, memory, disk)
 
-    A custom-built ESP32-based thermostat sending real-time temperature and humidity data via MQTT
+    A custom-built ESP32 thermostat, which receives direct method calls and sends real-time temperature and humidity data over MQTT
 
 Messages are routed through Dockerized modules and sent upstream to Azure IoT Hub, forming the basis for a remote-monitoring, real-time data platform.
 
@@ -12,25 +12,29 @@ You can check out more of the thermostat here: [ESP32 thermostat](./thermostat-p
 
 
 
-##  Overview
 🔧 Tech Stack
 
-    Azure IoT Hub + IoT Edge runtime
+    Azure IoT Hub + IoT Edge Runtime
+    For managing device communication and module orchestration
 
-    Docker + Azure Container Registry
+    Docker + Azure Container Registry (ACR)
+    Containerized modules built and deployed via ACR
 
     Python 3.10-slim
-    
-    ESP32 with DHT sensor + relay
-    
-    Host system: Ubuntu 22.04 (Laptop)
+    Lightweight base image for writing and running Edge modules
+
+    ESP32 (MicroPython)
+    Custom thermostat hardware that sends telemetry via MQTT and supports remote control through direct methods and REST endpoints.
+
+    Host System: Ubuntu 22.04 (Laptop)
+    Acts as the edge gateway device running all modules locally
 
 ##  Key Features
 
 - system_reader module collects CPU, memory, and disk usage using psutil and timestamps each entry in UTC ISO format
 - thermostat_reader module receives live data from an ESP32 over MQTT and forwards structured payloads
-- cloud_publisher manages message forwarding to Azure IoT Hub using custom routing
-- Modules in containers deployed on a physical Ubuntu host via Azure IoT Edge runtime and Docker
+- cloud_publisher module forwards telemetry upstream to Azure IoT Hub using custom-defined routes
+- All modules are containerized and deployed to a physical Ubuntu 22.04 host via the Azure IoT Edge runtime
 - Images are built and stored in Azure Container Registry (ACR) for deployment
 
 ##  Sample Telemetry Payloads
@@ -62,8 +66,8 @@ from laptop system reader:
 - Logic separation into multiple modules with custom routes ✅
 - Build a custom Wi-fi "thermostat" using an ESP32, temp sensor and a relay ✅
 - Read live data from the ESP32 thermostat ✅
+- Support direct method invocation from the cloud ✅
 - Implement cloud-to-device (C2D) messaging
-- Support direct method invocation from the cloud
 - Connecting data stream to Power BI (If I get Microsoft dev program access)
 - LCD integration on ESP32
 
@@ -73,6 +77,8 @@ from laptop system reader:
 
 ## Screenshots
 ![Event Stream](/screenshots/CLI-stream.png)
+
+![Direct methods](/screenshots/direct-methods.png)
 
 ![Device Status](/screenshots/sensorLogger-device.png)
 
