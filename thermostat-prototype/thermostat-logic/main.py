@@ -81,7 +81,7 @@ def sync_time():
         ntptime.settime()
         print("Time synced from NTP.")
     except Exception as e:
-        print("⚠️ NTP sync failed:", e)
+        print("NTP sync failed:", e)
 
 
 def on_mqtt_message(topic, msg):
@@ -182,9 +182,13 @@ while True:
             temp = sensor.temperature()
             humidity = sensor.humidity()
 
-            heating_state = "ON" if temp < TARGET_TEMP else "OFF"
-            relay.value(1 if heating_state == "ON" else 0)
-
+            if temp < TARGET_TEMP:
+                relay.value(1)
+                heating_state = "ON"
+            else:
+                relay.value(0)
+                heating_state = "OFF"
+            
             print("Temp:", temp, "| Humidity:", humidity, "| Heating:", heating_state)
 
             payload = get_status_payload(temp, humidity, heating_state)
