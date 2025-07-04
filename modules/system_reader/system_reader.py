@@ -26,7 +26,7 @@ async def main():
             data = await get_sensor_data()
             message = Message(json.dumps(data))
             await client.send_message_to_output(message, "readerOutput")
-            await asyncio.sleep(5)
+            await asyncio.sleep(15)
     except Exception as e:
         print(f"Error: {e}")
     finally:

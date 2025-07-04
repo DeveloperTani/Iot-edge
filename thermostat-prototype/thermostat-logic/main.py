@@ -14,7 +14,7 @@ def load_wifi_credentials():
             print("Loaded Wi-Fi config:", creds)
             return creds["ssid"], creds["password"]
     except Exception as e:
-        print("⚠️ Failed to load wifi.json, using fallback:", e)
+        print("Failed to load wifi.json, using fallback:", e)
         return "your-wifi-SSID", "your-password" # Add fallback credentials
 
 SSID, PASSWORD = load_wifi_credentials()
@@ -36,7 +36,7 @@ def load_config():
             config = json.load(f)
             return config.get("target_temp", 28)
     except Exception as e:
-        print("⚠️ Failed to load config.json, using default:", e)
+        print("Failed to load config.json, using default:", e)
         return 22
 
 def save_config(target_temp):
@@ -44,13 +44,13 @@ def save_config(target_temp):
         with open("config.json", "w") as f:
             json.dump({"target_temp": target_temp}, f)
     except Exception as e:
-        print("⚠️ Failed to save config:", e)
+        print("Failed to save config:", e)
 
 TARGET_TEMP = load_config()
 
 heating_state = "OFF"
 last_read_time = 0
-READ_INTERVAL = 1
+READ_INTERVAL = 30
 MIN_TEMP = 10
 MAX_TEMP = 35
 
@@ -69,10 +69,10 @@ def connect_wifi(ssid, password, timeout=60):
             time.sleep(1)
 
     if wlan.isconnected():
-        print("✅ Connected! IP:", wlan.ifconfig()[0])
+        print("Connected! IP:", wlan.ifconfig()[0])
         return True
     else:
-        print("❌ Failed to connect.")
+        print("Failed to connect.")
         return False
 
 def on_mqtt_message(topic, msg):
@@ -99,13 +99,13 @@ def on_mqtt_message(topic, msg):
                 save_config(TARGET_TEMP)
                 print("Set target temp to", TARGET_TEMP)
             else:
-                print("⚠️ Invalid temp value:", value)
+                print("Invalid temp value:", value)
 
         else:
-            print("⚠️ Unknown command:", cmd)
+            print("Unknown command:", cmd)
 
     except Exception as e:
-        print("⚠️ Error in MQTT message:", e)
+        print("Error in MQTT message:", e)
 
 def setup_mqtt():
     try:
@@ -116,7 +116,7 @@ def setup_mqtt():
         print("MQTT connected and subscribed.")
         return client
     except Exception as e:
-        print("⚠️ MQTT connection failed:", e)
+        print("MQTT connection failed:", e)
         return None
 
 def publish_mqtt(client, topic, payload):
@@ -124,7 +124,7 @@ def publish_mqtt(client, topic, payload):
         if client:
             client.publish(topic, payload)
     except Exception as e:
-        print("⚠️ MQTT publish error:", e)
+        print("MQTT publish error:", e)
 
 def get_status_payload(temp, humidity, heating_state):
     timestamp = time.localtime()
@@ -229,7 +229,7 @@ while True:
             conn.close()
 
     except Exception as e:
-        print("⚠️ Loop error:", e)
+        print("Loop error:", e)
         time.sleep(5)
 
 
