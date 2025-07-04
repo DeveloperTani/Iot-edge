@@ -1,8 +1,16 @@
-# IoT Edge System Telemetry Module
+# IoT Edge System + Thermostat Sensor logger
 
-The current version of this project deploys two IoT Edge modules (system_reader) and (cloud_publisher) to a physical Ubuntu 22.04 laptop accessed via SSH. The modules collect local system telemetry and forward it to Azure IoT Hub in real time.
+This project is a working prototype of an IoT Edge deployment using a physical Ubuntu laptop as the edge device. It simulates and collects telemetry from two sources:
 
- As a next phase, I plan to integrate my home-built Wi-fi "thermostat" into this project to act as a physical data source.
+    The laptop’s own system metrics (CPU, memory, disk)
+
+    A custom-built ESP32-based thermostat sending real-time temperature and humidity data via MQTT
+
+Messages are routed through Dockerized modules and sent upstream to Azure IoT Hub, forming the basis for a remote-monitoring, real-time data platform.
+
+You can check out more of the thermostat here: [ESP32 thermostat](./thermostat-prototype/)
+
+
 
 ##  Overview
 🔧 Tech Stack
@@ -12,16 +20,34 @@ The current version of this project deploys two IoT Edge modules (system_reader)
     Docker + Azure Container Registry
 
     Python 3.10-slim
-
+    
+    ESP32 with DHT sensor + relay
+    
     Host system: Ubuntu 22.04 (Laptop)
 
 ##  Key Features
 
-- Gathers telemetry (CPU, memory, disk usage) using psutil
-- Sends JSON-formatted messages every 5 seconds
-- Clean separation of logic between system_reader and cloud_publisher
+- system_reader module collects CPU, memory, and disk usage using psutil and timestamps each entry in UTC ISO format
+- thermostat_reader module receives live data from an ESP32 over MQTT and forwards structured payloads
+- cloud_publisher manages message forwarding to Azure IoT Hub using custom routing
+- Modules in containers deployed on a physical Ubuntu host via Azure IoT Edge runtime and Docker
+- Images are built and stored in Azure Container Registry (ACR) for deployment
 
-##  Sample Telemetry Payload
+##  Sample Telemetry Payloads
+
+from ESP32 thermostat:
+```json
+{
+{"temperature": 25.8,
+ "timestamp": "2025-07-04T00:13:36Z",
+ "humidity": 44.9,
+ "target_temp": 25,
+ "device_id": "esp32c3-01",
+ "heating": "OFF"}
+}
+```
+
+from laptop system reader:
 ```json
 {
   "timestamp": "2025-06-26T18:55:00.363867Z",
@@ -30,25 +56,29 @@ The current version of this project deploys two IoT Edge modules (system_reader)
   "disk_usage": 0.3
 }
 ```
+
 ## Future Plans
 
 - Logic separation into multiple modules with custom routes ✅
 - Build a custom Wi-fi "thermostat" using an ESP32, temp sensor and a relay ✅
-- Read and process live data from the ESP32 thermostat
+- Read live data from the ESP32 thermostat ✅
 - Implement cloud-to-device (C2D) messaging
 - Support direct method invocation from the cloud
 - Connecting data stream to Power BI (If I get Microsoft dev program access)
+- LCD integration on ESP32
 
 
 
 
 
 ## Screenshots
-![Event Stream](/screenshots/azure-cli-stream.png)
+![Event Stream](/screenshots/CLI-stream.png)
 
 ![Device Status](/screenshots/sensorLogger-device.png)
 
 ![Module Logs](/screenshots/reader-and-publisher-logs.png)
+
+![thermostat_reader](/screenshots/thermostat_logger.png)
 
 ![system_reader](/screenshots/system_reader.png)
 
