@@ -5,6 +5,7 @@ import network
 import socket
 import json
 import uselect
+import ntptime
 from umqtt.simple import MQTTClient
 
 def load_wifi_credentials():
@@ -74,6 +75,14 @@ def connect_wifi(ssid, password, timeout=60):
     else:
         print("Failed to connect.")
         return False
+
+def sync_time():
+    try:
+        ntptime.settime()
+        print("Time synced from NTP.")
+    except Exception as e:
+        print("⚠️ NTP sync failed:", e)
+
 
 def on_mqtt_message(topic, msg):
     global TARGET_TEMP
@@ -147,6 +156,8 @@ def json_response(data, status="200 OK"):
 # ---- Start execution ----
 if not connect_wifi(SSID, PASSWORD):
     raise RuntimeError("Wi-Fi connection failed.")
+
+sync_time()
 
 mqtt = setup_mqtt()
 
