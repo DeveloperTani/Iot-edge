@@ -4,7 +4,6 @@ from azure.eventhub.aio import EventHubConsumerClient
 from azure.eventhub import EventData
 from app.state import latest_status
 
-load_dotenv()
 
 EVENT_HUB_CONN_STR = os.getenv("EVENT_HUB_CONNECTION_STRING")
 EVENT_HUB_NAME = os.getenv("EVENT_HUB_NAME")

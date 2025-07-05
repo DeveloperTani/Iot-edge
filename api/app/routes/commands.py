@@ -2,14 +2,17 @@ from fastapi import APIRouter, HTTPException
 from app.state import latest_status
 from app.azure_method import invoke_direct_method
 from app.device_map import AZURE_DEVICE_MAP
-router = APIRouter()
+from fastapi import Security
+from app.auth import oauth2_scheme
 
+
+router = APIRouter()
 
 from app.device_map import AZURE_DEVICE_MAP
 
 # 1. Increase target temperature /command/{device_id}/increase
 
-@router.post("/command/{device_id}/increase")
+@router.post("/command/{device_id}/increase", dependencies=[Security(oauth2_scheme)])
 def increase_target_temp(device_id: str):
     if device_id not in latest_status:
         raise HTTPException(status_code=404, detail="Device not found or no status available")
@@ -42,7 +45,7 @@ def increase_target_temp(device_id: str):
 
 # 2. Decrease target temperature /command/{device_id}/decrease
 
-@router.post("/command/{device_id}/decrease")
+@router.post("/command/{device_id}/decrease", dependencies=[Security(oauth2_scheme)])
 def decrease_target_temp(device_id: str):
     if device_id not in latest_status:
         raise HTTPException(status_code=404, detail="Device not found or no status available")
@@ -74,7 +77,8 @@ def decrease_target_temp(device_id: str):
     }
 
 # 3. Set target temperature /command/{device_id}/set/{target_temp}
-@router.post("/command/{device_id}/set/{target_temp}")
+
+@router.post("/command/{device_id}/set/{target_temp}", dependencies=[Security(oauth2_scheme)])
 def set_target_temp(device_id: str, target_temp: int):
     if device_id not in latest_status:
         raise HTTPException(status_code=404, detail="Device not found or no status available")

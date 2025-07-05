@@ -3,7 +3,6 @@ from azure.iot.hub import IoTHubRegistryManager
 from azure.iot.hub.models import CloudToDeviceMethod
 from dotenv import load_dotenv
 
-load_dotenv()
 
 CONNECTION_STRING = os.getenv("IOTHUB_CONNECTION_STRING")
 
