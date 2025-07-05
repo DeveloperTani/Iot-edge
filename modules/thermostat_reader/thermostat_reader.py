@@ -60,7 +60,7 @@ async def method_handler(method_request, client, mqtt_client):
                 target_temp = int(new_temp)
                 send_mqtt_command(mqtt_client, "set", target_temp)
                 response_payload = {"result": "success",}
-                print(f"[METHOD] Set target_temp to {target_temp}")
+                print(f"[METHOD] Set target temp to {target_temp}")
                 status = 200
             else:
                 raise ValueError("target_temp missing")
