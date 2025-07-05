@@ -16,7 +16,6 @@ MQTT_COMMAND_TOPIC = "iot/esp32c3/cmd"  # Commands sent back to ESP32
 latest_payload = None
 last_sent_time = 0
 SEND_INTERVAL = int(os.getenv("SEND_INTERVAL", "15"))
-target_temp = int(os.getenv("TARGET_TEMP", "23"))  # Initial default target
 
 # --- MQTT Setup ---
 def on_mqtt_message(client, userdata, message):
@@ -24,7 +23,6 @@ def on_mqtt_message(client, userdata, message):
     try:
         payload = json.loads(message.payload.decode())
         payload["timestamp"] = datetime.utcnow().isoformat() + "Z"
-        payload["target_temp"] = target_temp
         latest_payload = payload
         print(f"[MQTT IN] {payload}")
     except Exception as e:
@@ -50,7 +48,6 @@ def send_mqtt_command(client, cmd_type, value=None):
 
 # --- Direct Method Handler ---
 async def method_handler(method_request, client, mqtt_client):
-    global target_temp
 
     try:
         name = method_request.name
@@ -62,24 +59,22 @@ async def method_handler(method_request, client, mqtt_client):
             if new_temp is not None:
                 target_temp = int(new_temp)
                 send_mqtt_command(mqtt_client, "set", target_temp)
-                response_payload = {"result": "success", "target_temp": target_temp}
+                response_payload = {"result": "success",}
                 print(f"[METHOD] Set target_temp to {target_temp}")
                 status = 200
             else:
                 raise ValueError("target_temp missing")
 
         elif name == "increase":
-            target_temp += 1
             send_mqtt_command(mqtt_client, "increase")
-            response_payload = {"result": "success", "target_temp": target_temp}
-            print(f"[METHOD] Increased target_temp to {target_temp}")
+            response_payload = {"result": "success"}
+            print(f"[METHOD] Forwarded 'increase' command")
             status = 200
 
         elif name == "decrease":
-            target_temp -= 1
             send_mqtt_command(mqtt_client, "decrease")
-            response_payload = {"result": "success", "target_temp": target_temp}
-            print(f"[METHOD] Decreased target_temp to {target_temp}")
+            response_payload = {"result": "success",}
+            print(f"[METHOD] Forwarded 'decrease' command")
             status = 200
 
         else:
@@ -117,7 +112,7 @@ async def main():
         while True:
             now = time.time()
             if latest_payload and (now - last_sent_time >= SEND_INTERVAL):
-                message = Message(json.dumps(latest_payload))
+                message = Message(json.dumps(latest_payload))  # send it as-is
                 await module_client.send_message_to_output(message, "thermostatOutput")
                 print(f"[SEND] Telemetry sent: {latest_payload}")
                 last_sent_time = now
