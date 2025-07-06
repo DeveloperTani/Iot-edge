@@ -9,6 +9,7 @@ from fastapi import FastAPI, Depends, Security
 from fastapi.security import OAuth2AuthorizationCodeBearer
 from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
 from fastapi.openapi.models import OAuthFlowAuthorizationCode
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.auth import oauth2_scheme, CLIENT_ID, SCOPE
 
@@ -22,6 +23,17 @@ app = FastAPI(
         "usePkceWithAuthorizationCodeGrant": True,
     }
 )
+
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Replace with frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(status_router)
 app.include_router(commands_router)
 
