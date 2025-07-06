@@ -1,58 +1,65 @@
-# IoT Edge System + Thermostat Sensor logger
+# IoT Edge System + Thermostat Sensor Logger
 
-This project is a working prototype of an Azure IoT Edge deployment using a physical Ubuntu laptop as the edge device. It collects and routes telemetry from two sources:
+This project features a physical ESP32-based thermostat (running MicroPython), Azure IoT Edge modules (on Linux Ubuntu 22.04), a FastAPI backend connected to Azure IoT Hub, and a React frontend dashboard for easy control.
 
-    The laptop’s own system metrics (CPU, memory, disk)
-
-    A custom-built ESP32 thermostat, which receives direct method calls and sends real-time temperature and humidity data over MQTT
-
-Messages are routed through Dockerized modules and sent upstream to Azure IoT Hub, forming the basis for a remote-monitoring, real-time data platform.
-
-You can check out more of the thermostat here: [ESP32 thermostat](./thermostat-prototype/)
+I have scaled this project up from a single edge module that read system data using psutil to a full scale pipeline from wiring and flashing + programming up my own thermostat to hooking it up to my edge runtime environment to building an api and fronend to support it.
 
 
+**Status (2025-07-06):**  
+API is deployed on Azure (POST endpoints currently buggy).  
+Frontend is running locally, will be deployed once API is stable.
 
-🔧 Tech Stack
+See [ESP32 thermostat](./thermostat-prototype/) for device details.
 
-    Azure IoT Hub + IoT Edge Runtime
-    For managing device communication and module orchestration
+---
 
-    Docker + Azure Container Registry (ACR)
-    Containerized modules built and deployed via ACR
+## 🔧 Tech Stack
 
-    Python 3.10-slim
-    Lightweight base image for writing and running Edge modules
+- Azure IoT Hub + IoT Edge Runtime: Device communication and module orchestration
 
-    ESP32 (MicroPython)
-    Custom thermostat hardware that sends telemetry via MQTT and supports remote control through direct methods and REST endpoints.
+- Docker + Azure Container Registry (ACR): Containerized modules, built and deployed via ACR
 
-    Host System: Ubuntu 22.04 (Laptop)
-    Acts as the edge gateway device running all modules locally
+- Python 3.10-slim: Base image for Edge modules
+
+- FastAPI: API backend (secured with OAuth2, connects to Azure IoT Hub, handles device commands & telemetry)
+
+- React + Vite: Frontend dashboard for device status and control
+
+- @azure/msal-browser / @azure/msal-react: MSAL authentication in frontend
+
+- ESP32 (MicroPython): Custom thermostat hardware (MQTT telemetry, direct methods)
+
+- paho-mqtt: MQTT client in Edge modules
+
+- Ubuntu 22.04 (Laptop): Edge host
+---
 
 ##  Key Features
 
-- system_reader module collects CPU, memory, and disk usage using psutil and timestamps each entry in UTC ISO format
-- thermostat_reader module receives live data from an ESP32 over MQTT and forwards structured payloads
-- cloud_publisher module forwards telemetry upstream to Azure IoT Hub using custom-defined routes
-- All modules are containerized and deployed to a physical Ubuntu 22.04 host via the Azure IoT Edge runtime
-- Images are built and stored in Azure Container Registry (ACR) for deployment
+- `system_reader`: (not in use) Collects system stats using psutil, timestamps in UTC
+- `thermostat_reader`: Receives live ESP32 MQTT data, structures payloads
+- `cloud_publisher`: Forwards telemetry to IoT Hub using custom routes
+- **All modules containerized & deployed to physical Ubuntu host via IoT Edge runtime**
+- **API**: Connects to IoT Hub, exposes direct methods as endpoints
+- **Images**: Built & stored in Azure Container Registry (ACR)
+
+---
 
 ##  Sample Telemetry Payloads
 
-from ESP32 thermostat:
+**From ESP32 Thermostat:**
 ```json
 {
-{"temperature": 25.8,
- "timestamp": "2025-07-04T00:13:36Z",
- "humidity": 44.9,
- "target_temp": 25,
- "device_id": "esp32c3-01",
- "heating": "OFF"}
+  "temperature": 25.8,
+  "timestamp": "2025-07-04T00:13:36Z",
+  "humidity": 44.9,
+  "target_temp": 25,
+  "device_id": "esp32c3-01",
+  "heating": "OFF"
 }
-```
 
-from laptop system reader:
-```json
+From laptop system reader:
+
 {
   "timestamp": "2025-06-26T18:55:00.363867Z",
   "cpu_usage": 0.0,
@@ -61,21 +68,30 @@ from laptop system reader:
 }
 ```
 
-## Future Plans
 
-- Logic separation into multiple modules with custom routes ✅
-- Build a custom Wi-fi "thermostat" using an ESP32, temp sensor and a relay ✅
-- Read live data from the ESP32 thermostat ✅
-- Support direct method invocation from the cloud ✅
-- Implement cloud-to-device (C2D) messaging
-- Connecting data stream to Power BI (If I get Microsoft dev program access)
-- LCD integration on ESP32
+ Future Plans
 
+- ✅Logic separation into multiple modules with custom routes
+
+- ✅Custom ESP32 thermostat (temp sensor + relay)
+
+- ✅Live data from ESP32
+
+- ✅Direct method invocation from the cloud
+
+- API and frontend dashboard for easy control (in progress)
+
+- Power BI integration (if MS dev access comes through)
+
+- ESP32 LCD integration
 
 
 
 
 ## Screenshots
+
+![iot-dashboard](/screenshots/iot-dashboard.png)
+
 ![Event Stream](/screenshots/CLI-stream.png)
 
 ![Direct methods](/screenshots/direct-methods.png)
