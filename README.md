@@ -4,6 +4,7 @@ This project features a physical ESP32-based thermostat (running MicroPython), A
 
 I have scaled this project up from a single edge module that read system data using psutil to a full scale pipeline from wiring and flashing + programming up my own thermostat to hooking it up to my edge runtime environment to building an api and fronend to support it.
 
+More detailed documentation of each component is coming soon!
 
 **Status (2025-07-06):**  
 API is deployed on Azure (POST endpoints currently buggy).  
