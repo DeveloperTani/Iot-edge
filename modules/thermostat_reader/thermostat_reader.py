@@ -9,7 +9,11 @@ from azure.iot.device import Message, MethodResponse
 
 # --- MQTT settings ---
 MQTT_BROKER = os.getenv("MQTT_BROKER", "localhost")
-MQTT_PORT = 1883
+MQTT_PORT = int(os.getenv("MQTT_PORT", 8883))  # Default MQTT port for TLS
+MQTT_USERNAME = os.getenv("MQTT_USERNAME", "")
+MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", "")
+CA_CERT_PATH="/etc/ssl/certs/ca-certificates.crt"
+
 MQTT_TOPIC = "iot/esp32c3/status"       # Incoming telemetry from ESP32
 MQTT_COMMAND_TOPIC = "iot/esp32c3/cmd"  # Commands sent back to ESP32
 
@@ -30,8 +34,23 @@ def on_mqtt_message(client, userdata, message):
 
 def start_mqtt_loop():
     client = mqtt.Client()
+
+    # TLS setup
+    ca_cert_path = os.getenv("CA_CERT_PATH")
+    if ca_cert_path:
+        client.tls_set(ca_certs=ca_cert_path)
+        client.tls_insecure_set(False) 
+        print(f"[MQTT] TLS enabled using CA: {ca_cert_path}")
+    else:
+        print("[MQTT] TLS not enabled (CA_CERT_PATH missing)")
+
+    client.username_pw_set(
+        username=os.getenv("MQTT_USERNAME", ""),
+        password=os.getenv("MQTT_PASSWORD", "")
+    )
+
     client.on_message = on_mqtt_message
-    client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    client.connect(MQTT_BROKER, int(os.getenv("MQTT_PORT", 8883)), 60)
     client.subscribe(MQTT_TOPIC)
     client.loop_start()
     return client

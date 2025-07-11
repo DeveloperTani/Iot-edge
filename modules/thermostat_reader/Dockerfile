@@ -1,13 +1,22 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
+# Install only what's needed
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
-    && rm -rf /var/lib/apt/lists/*
+    libssl-dev \
+    ca-certificates \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
+# Copy app code
 COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip \
+ && pip install --no-cache-dir -r requirements.txt
 
+# Default command
 CMD ["python", "-u", "thermostat_reader.py"]

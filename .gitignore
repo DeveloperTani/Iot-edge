@@ -13,3 +13,4 @@ __pycache__/
 
 # Docker
 *.logconfig.json
+node_modules/
