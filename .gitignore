@@ -12,4 +12,4 @@ __pycache__/
 .DS_Store
 
 # Docker
-*.log
+*.logconfig.json

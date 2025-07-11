@@ -1,0 +1,20 @@
+{
+  "wifi": {
+    "ssid": "YourSSID",
+    "password": "YourPassword"
+  },
+  "mqtt": {
+    "broker": "your.broker",
+    "port": port_number,
+    "username": "mqtt_user",
+    "password": "mqtt_pass",
+    "topic_status": "mqtt_topic",
+    "topic_cmd": "mqtt_cmd_topic",
+    "device_id": "device_id"
+    "tls": true
+  },
+  "target_temp": 22
+  "read_interval": 15,
+  "min_temp": 10,
+  "max_temp": 35
+}
