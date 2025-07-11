@@ -6,9 +6,9 @@ I have scaled this project up from a single edge module that read system data us
 
 More detailed documentation of each component is coming soon!
 
-**Status (2025-07-06):**  
-API is deployed on Azure (POST endpoints currently buggy).  
-Frontend is running locally, will be deployed once API is stable.
+**Status (2025-07-11):**  
+Both frontend and backend are deployed on Azure.
+The backend cloud-based endpoints are not currently in use and data/commands are routed straight API --> MQTT broker --> device and vice versa.
 
 See [ESP32 thermostat](./thermostat-prototype/) for device details.
 
