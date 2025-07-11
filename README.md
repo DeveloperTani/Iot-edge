@@ -2,7 +2,7 @@
 
 This project features a physical ESP32-based thermostat (running MicroPython), Azure IoT Edge modules (on Linux Ubuntu 22.04), a FastAPI backend connected to Azure IoT Hub, and a React frontend dashboard for easy control.
 
-I have scaled this project up from a single edge module that read system data using psutil to a full scale pipeline from wiring and flashing + programming up my own thermostat to hooking it up to my edge runtime environment to building an api and fronend to support it.
+I have scaled this project up from a single edge module that read system data using psutil to a full scale pipeline from wiring and flashing + programming up my own thermostat to hooking it up to my edge runtime environment to building an api and frontend to support it.
 
 More detailed documentation of each component is coming soon!
 
