@@ -1,20 +1,17 @@
-import asyncio
 from fastapi import FastAPI
 from dotenv import load_dotenv
-from app.routes.status import router as status_router
-from app.routes.commands import router as commands_router
-from app.eventhub_consumer import consume
-
-from fastapi import FastAPI, Depends, Security
-from fastapi.security import OAuth2AuthorizationCodeBearer
-from fastapi.openapi.models import OAuthFlows as OAuthFlowsModel
-from fastapi.openapi.models import OAuthFlowAuthorizationCode
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.auth import oauth2_scheme, CLIENT_ID, SCOPE
+from app.auth import CLIENT_ID, SCOPE
+from app.state import latest_mqtt_status
+from app.mqtt.mqtt_client import create_mqtt_client
+from app.azure.eventhub_consumer import consume
+from app.routes.mqtt import status as mqtt_status
+from app.routes.mqtt import commands as mqtt_cmds
+
+import asyncio
 
 load_dotenv()
-
 
 app = FastAPI(
     swagger_ui_init_oauth={
@@ -24,19 +21,22 @@ app = FastAPI(
     }
 )
 
-
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Replace with frontend URL in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-app.include_router(status_router)
-app.include_router(commands_router)
+# Register routes
+app.include_router(mqtt_status.router, prefix="/mqtt/status")
+app.include_router(mqtt_cmds.router, prefix="/mqtt/commands")
 
+# Start MQTT + assign state
+app.state.latest_mqtt_status = latest_mqtt_status
+mqtt_client = create_mqtt_client()
+app.state.mqtt_client = mqtt_client
 
 @app.on_event("startup")
 async def startup_event():

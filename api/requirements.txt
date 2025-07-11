@@ -6,3 +6,4 @@ requests
 azure-iot-hub
 azure-eventhub
 pydantic
+paho-mqtt

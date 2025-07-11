@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from azure.eventhub.aio import EventHubConsumerClient
 from azure.eventhub import EventData
-from app.state import latest_status
+from app.state import latest_cloud_status
 
 
 EVENT_HUB_CONN_STR = os.getenv("EVENT_HUB_CONNECTION_STRING")
@@ -16,8 +16,8 @@ async def on_event(partition_context, event: EventData):
         print(f"Received event: {status} from partition: {partition_context.partition_id}")
 
         if device_id:
-            latest_status[device_id] = status  # store status per device_id
-            print(f"Updated latest_status for {device_id}: {latest_status[device_id]}")
+            latest_cloud_status[device_id] = status  # store status per device_id
+            print(f"Updated latest_status for {device_id}: {latest_cloud_status[device_id]}")
         else:
             print("Warning: Missing device_id in status payload.")
 

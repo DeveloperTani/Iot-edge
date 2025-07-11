@@ -1,4 +1,4 @@
-#mapping physical device ID to azure device and module IDs
+#mapping physical device ID to azure device and module IDs. Only for cloud endpoints
 
 AZURE_DEVICE_MAP = {
     "esp32c3-01": {
