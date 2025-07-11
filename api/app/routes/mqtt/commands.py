@@ -21,7 +21,7 @@ def publish_command(request: Request, device_id: str, cmd: str, value: int = Non
     return payload
 
 
-@router.post("/mqtt/command/{device_id}/increase", dependencies=[Security(oauth2_scheme)])
+@router.post("/{device_id}/increase", dependencies=[Security(oauth2_scheme)])
 def increase_target_temp(device_id: str, request: Request):
     if device_id not in latest_mqtt_status:
         raise HTTPException(status_code=404, detail="Device not found or no status available")
@@ -41,7 +41,7 @@ def increase_target_temp(device_id: str, request: Request):
     }
 
 
-@router.post("/mqtt/command/{device_id}/decrease", dependencies=[Security(oauth2_scheme)])
+@router.post("/{device_id}/decrease", dependencies=[Security(oauth2_scheme)])
 def decrease_target_temp(device_id: str, request: Request):
     if device_id not in latest_mqtt_status:
         raise HTTPException(status_code=404, detail="Device not found or no status available")
@@ -61,7 +61,7 @@ def decrease_target_temp(device_id: str, request: Request):
     }
 
 
-@router.post("/mqtt/command/{device_id}/set/{target_temp}", dependencies=[Security(oauth2_scheme)])
+@router.post("/{device_id}/set/{target_temp}", dependencies=[Security(oauth2_scheme)])
 def set_target_temp(device_id: str, target_temp: int, request: Request):
     if device_id not in latest_mqtt_status:
         raise HTTPException(status_code=404, detail="Device not found or no status available")
