@@ -13,6 +13,10 @@ The backend cloud-based endpoints are not currently in use and data/commands are
 See [ESP32 thermostat](./thermostat-prototype/) for device details.
 
 ---
+## Data Flow Diagram
+
+
+![dataflow-diagram](/screenshots/dataflow-diagram.png)
 
 ## 🔧 Tech Stack
 
@@ -90,6 +94,7 @@ From laptop system reader:
 
 
 ## Screenshots
+
 
 ![iot-dashboard](/screenshots/iot-dashboard.png)
 
