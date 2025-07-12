@@ -9,19 +9,23 @@ import './custom.css'
 
 const msalInstance = new PublicClientApplication(msalConfig)
 
+async function bootstrap() {
+  try {
+    await msalInstance.initialize() 
+    await msalInstance.handleRedirectPromise()
 
-msalInstance.initialize()
-  .then(() => msalInstance.handleRedirectPromise())
-  .then(() => {
     ReactDOM.createRoot(document.getElementById("root")).render(
       <React.StrictMode>
         <MsalProvider instance={msalInstance}>
-          <Dashboard />
+          <main className="bg-dark text-light">
+            <Dashboard />
+          </main>
         </MsalProvider>
       </React.StrictMode>
     )
-  })
-  .catch((err) => {
-    console.error("MSAL startup error:", err)
-    document.getElementById("root").textContent = "Authentication failed. Check console."
-  })
+  } catch (e) {
+    console.error("MSAL startup error:", e)
+  }
+}
+
+bootstrap()
