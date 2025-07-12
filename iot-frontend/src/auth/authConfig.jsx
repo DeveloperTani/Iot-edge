@@ -9,10 +9,6 @@ export const msalConfig = {
     storeAuthStateInCookie: false,
   },
 }
-console.log("Client ID:", import.meta.env.VITE_AZURE_CLIENT_ID);
-console.log("Tenant ID:", import.meta.env.VITE_AZURE_TENANT_ID);
-console.log("API Scope:", import.meta.env.VITE_API_SCOPE);
-
 export const loginRequest = {
   scopes: [import.meta.env.VITE_API_SCOPE],
 }
