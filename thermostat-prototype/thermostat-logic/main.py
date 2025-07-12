@@ -64,9 +64,9 @@ oled = ssd1306.SSD1306_SPI(128, 64, spi, dc, res, cs)
 # ----------------- DISPLAY FUNCTION -----------------
 def update_display(current_temp, target_temp, heating):
     oled.fill(0)
-    oled.text("Temp:   {:.1f}C".format(current_temp), 0, 0)
-    oled.text("Target:  {}C".format(target_temp), 0, 12)
-    oled.text("Heat:    {}".format(heating), 0, 24)
+    oled.text("Temperature:   {:.1f}C".format(current_temp), 0, 0)
+    oled.text("Target temp:  {}C".format(target_temp), 0, 12)
+    oled.text("Heating:    {}".format(heating), 0, 24)
 
     t = time.localtime()
     oled.text("{:02}:{:02}:{:02}".format(t[3], t[4], t[5]), 0, 48)
