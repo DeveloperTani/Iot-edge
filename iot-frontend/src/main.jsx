@@ -12,7 +12,11 @@ const msalInstance = new PublicClientApplication(msalConfig)
 async function bootstrap() {
   try {
     await msalInstance.initialize() 
-    await msalInstance.handleRedirectPromise()
+    await msalInstance.handleRedirectPromise().catch((e) => {
+  if (e.errorCode !== "no_token_request_cache_error") {
+    console.error("MSAL startup error:", e)
+  }
+})
 
     ReactDOM.createRoot(document.getElementById("root")).render(
       <React.StrictMode>
