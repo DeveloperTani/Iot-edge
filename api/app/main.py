@@ -10,6 +10,7 @@ from app.routes.mqtt import status as mqtt_status
 from app.routes.mqtt import commands as mqtt_cmds
 
 import asyncio
+import os
 
 load_dotenv()
 
@@ -21,9 +22,13 @@ app = FastAPI(
     }
 )
 
+
+origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
