@@ -9,16 +9,27 @@ import './custom.css'
 
 const msalInstance = new PublicClientApplication(msalConfig)
 
-msalInstance.handleRedirectPromise().then(() => {
-  ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-      <MsalProvider instance={msalInstance}>
-        <body className="bg-dark text-light">
-          <Dashboard />
-        </body>
-      </MsalProvider>
-    </React.StrictMode>
-  )
-}).catch((error) => {
-  console.error("Error handling redirect:", error)
+async function bootstrap() {
+  try {
+    await msalInstance.initialize() 
+    await msalInstance.handleRedirectPromise().catch((e) => {
+  if (e.errorCode !== "no_token_request_cache_error") {
+    console.error("MSAL startup error:", e)
+  }
 })
+
+    ReactDOM.createRoot(document.getElementById("root")).render(
+      <React.StrictMode>
+        <MsalProvider instance={msalInstance}>
+          <main className="bg-dark text-light">
+            <Dashboard />
+          </main>
+        </MsalProvider>
+      </React.StrictMode>
+    )
+  } catch (e) {
+    console.error("MSAL startup error:", e)
+  }
+}
+
+bootstrap()
