@@ -56,6 +56,8 @@ export default function Dashboard() {
     }
   }, [token])
 
+console.log("Client ID:", import.meta.env.VITE_AZURE_CLIENT_ID)
+
   if (inProgress !== "none") return <div>Authenticating…</div>
   if (!isAuthenticated) return <div>Redirecting to sign in…</div>
   if (error) return <div className="text-red-500">Error: {error}</div>
