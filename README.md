@@ -16,7 +16,7 @@ See [ESP32 thermostat](./thermostat-prototype/) for device details.
 ## Data Flow Diagram
 
 
-![dataflow-diagram](/screenshots/dataflow-diagram.png)
+![dataflow-diagram](/screenshots/dataflow.png)
 
 ## 🔧 Tech Stack
 
