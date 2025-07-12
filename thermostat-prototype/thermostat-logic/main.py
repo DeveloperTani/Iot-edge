@@ -1,3 +1,4 @@
+from machine import Pin, SPI
 import machine
 import time
 import dht
@@ -6,6 +7,7 @@ import socket
 import json
 import uselect
 import ntptime
+import ssd1306
 from umqtt.robust import MQTTClient
 
 
@@ -42,14 +44,33 @@ READ_INTERVAL = config.get("read_interval", 5)
 MIN_TEMP = config.get("min_temp", 10)
 MAX_TEMP = config.get("max_temp", 35)
 
-# ----------------- SETUP -----------------
-sensor = dht.DHT22(machine.Pin(4))
-relay = machine.Pin(10, machine.Pin.OUT)
+# ----------------- SENSOR + RELAY SETUP -----------------
+sensor = dht.DHT22(Pin(2))
+relay = Pin(4, Pin.OUT)
 
 heating_state = "OFF"
 last_read_time = 0
-temp = None
-humidity = None
+temp = 0.0
+humidity = 0.0
+
+# ----------------- OLED DISPLAY SETUP (SPI) -----------------
+spi = SPI(1, baudrate=1000000, polarity=0, phase=0, sck=Pin(0), mosi=Pin(1))
+dc = Pin(6)    # Data/Command
+res = Pin(10)  # Reset
+cs = Pin(7)    # Chip Select
+
+oled = ssd1306.SSD1306_SPI(128, 64, spi, dc, res, cs)
+
+# ----------------- DISPLAY FUNCTION -----------------
+def update_display(current_temp, target_temp, heating):
+    oled.fill(0)
+    oled.text("Temp:   {:.1f}C".format(current_temp), 0, 0)
+    oled.text("Target:  {}C".format(target_temp), 0, 12)
+    oled.text("Heat:    {}".format(heating), 0, 24)
+
+    t = time.localtime()
+    oled.text("{:02}:{:02}:{:02}".format(t[3], t[4], t[5]), 0, 48)
+    oled.show()
 
 # ----------------- NETWORK -----------------
 def connect_wifi(ssid, password, timeout=60):
@@ -200,6 +221,7 @@ while True:
                 heating_state = "OFF"
 
             print("Temp:", temp, "| Humidity:", humidity, "| Heating:", heating_state)
+            update_display(temp, TARGET_TEMP, heating_state)
 
             payload = get_status_payload(temp, humidity, heating_state)
             publish_mqtt(mqtt, MQTT_TOPIC, payload)
