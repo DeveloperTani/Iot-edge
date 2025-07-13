@@ -8,7 +8,7 @@ More detailed documentation of each component is coming soon!
 
 **Status (2025-07-11):**  
 Both frontend and backend are deployed on Azure.
-The backend cloud-based endpoints are not currently in use and data/commands are routed straight API --> MQTT broker --> device and vice versa.
+The backend cloud-based endpoints are not currently in use and data/commands are routed straight through API --> MQTT broker --> device and vice versa.
 
 See [ESP32 thermostat](./thermostat-prototype/) for device details.
 
@@ -20,23 +20,25 @@ See [ESP32 thermostat](./thermostat-prototype/) for device details.
 
 ## 🔧 Tech Stack
 
-- Azure IoT Hub + IoT Edge Runtime: Device communication and module orchestration
+- Azure IoT Hub + IoT Edge Runtime – Device connectivity and module orchestration
 
-- Docker + Azure Container Registry (ACR): Containerized modules, built and deployed via ACR
+- Docker + Azure Container Registry (ACR) – Containerized module build + deployment
 
-- Python 3.10-slim: Base image for Edge modules
+- Python 3.10-slim – Base image for custom IoT Edge modules
 
-- FastAPI: API backend (secured with OAuth2, connects to Azure IoT Hub, handles device commands & telemetry)
+- FastAPI – Backend API (OAuth2-secured), MQTT control + telemetry
 
-- React + Vite: Frontend dashboard for device status and control
+- React + Vite – Frontend dashboard with Entra ID (Azure AD) login
 
-- @azure/msal-browser / @azure/msal-react: MSAL authentication in frontend
+- MSAL (msal-browser / msal-react) – Microsoft Authentication in frontend
 
-- ESP32 (MicroPython): Custom thermostat hardware (MQTT telemetry, direct methods)
+- ESP32 (MicroPython) – Custom thermostat hardware (MQTT telemetry + commands)
 
-- paho-mqtt: MQTT client in Edge modules
+- paho-mqtt – MQTT client
 
-- Ubuntu 22.04 (Laptop): Edge host
+- Ubuntu 22.04 (VM) – Virtual Machine host for Mosquitto
+  
+- Ubuntu 22.04 (laptop) Physical host for edge modules
 ---
 
 ##  Key Features
@@ -44,10 +46,15 @@ See [ESP32 thermostat](./thermostat-prototype/) for device details.
 - `system_reader`: (not in use) Collects system stats using psutil, timestamps in UTC
 - `thermostat_reader`: Receives live ESP32 MQTT data, structures payloads
 - `cloud_publisher`: Forwards telemetry to IoT Hub using custom routes
-- **All modules containerized & deployed to physical Ubuntu host via IoT Edge runtime**
-- **API**: Connects to IoT Hub, exposes direct methods as endpoints
-- **Images**: Built & stored in Azure Container Registry (ACR)
+- **ESP thermostat**: Sends telemetry and receives commands via MQTT. Powers up an LED if set temperature threshold is met
+- **MQTT Broker**: TLS secured Mosquitto broker for message routing
+- **Frontend**: React SPA for real-time control + telemetry (auth via Azure Entra ID)
+- **API**: Provides direct MQTT endpoints for controlling the device and receiving telemetry
+- **Deployment**:
 
+   - Backend (Edge modules + API): Dockerized, stored in ACR, deployed via IoT Edge runtime
+
+   - Frontend: Built and deployed using Azure Static Web Apps CI/CD
 ---
 
 ##  Sample Telemetry Payloads
@@ -62,9 +69,9 @@ See [ESP32 thermostat](./thermostat-prototype/) for device details.
   "device_id": "esp32c3-01",
   "heating": "OFF"
 }
-
-From laptop system reader:
-
+```
+**From laptop system_reader**
+```json
 {
   "timestamp": "2025-06-26T18:55:00.363867Z",
   "cpu_usage": 0.0,
@@ -84,17 +91,20 @@ From laptop system reader:
 
 - ✅Direct method invocation from the cloud
 
-- API and frontend dashboard for easy control (in progress)
+- ✅API and frontend dashboard for easy control (in progress)
+
+- ✅ESP32 LCD integration
 
 - Power BI integration (if MS dev access comes through)
-
-- ESP32 LCD integration
-
-
+  
+- Machine learning? 
 
 
-## Screenshots
 
+
+## Screenshots and physical ESP device
+
+![thermostat](/thermostat-prototype/pictures/thermostat.png)
 
 ![iot-dashboard](/screenshots/iot-dashboard.png)
 
