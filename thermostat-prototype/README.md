@@ -2,3 +2,5 @@ This is a sub-project involving a breadboard "thermostat" that uses ESP32-C3, DH
 The thermostat is integrated with my Iot edge module work.
 
 More about this project soon.
+
+![thermostat](/thermostat-prototype/pictures/thermostat.jpg)
