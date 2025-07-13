@@ -81,7 +81,7 @@ See [ESP32 thermostat](./thermostat-prototype/) for device details.
 ```
 
 
- Future Plans
+ ## Future Plans
 
 - ✅Logic separation into multiple modules with custom routes
 
