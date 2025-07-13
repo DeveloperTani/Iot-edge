@@ -104,7 +104,7 @@ See [ESP32 thermostat](./thermostat-prototype/) for device details.
 
 ## Screenshots and physical ESP device
 
-![thermostat](/thermostat-prototype/pictures/thermostat.png)
+![thermostat](/thermostat-prototype/pictures/thermostat.jpg)
 
 ![iot-dashboard](/screenshots/iot-dashboard.png)
 
